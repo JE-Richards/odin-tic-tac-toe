@@ -1,0 +1,186 @@
+/*---------------------------------*\
+|                                   |
+|            Font Imports           |
+|                                   |
+\*---------------------------------*/
+
+@font-face {
+    font-family: 'eraser';
+    src: url('./Fonts/Eraser/eraserregular-webfont.woff2') format('woff2'),
+         url('./Fonts/Eraser/eraserregular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*---------------------------------*\
+|                                   |
+|           Theme Colours           |
+|                                   |
+\*---------------------------------*/
+:root {
+    --accent-col: #1e1e1e;
+    --main-content-col: #262626;
+    --font-col: #dadada;
+    --highlight-col: #A88BFA;
+    --link-col: #A88BFA;
+    --link-hover-col: #725ea8;
+    --link-click-col: #5031a7;
+    --link-visited-col: #A88BFA;
+}
+
+/*---------------------------------*\
+|                                   |
+|        Multi-section Styles       |
+|                                   |
+\*---------------------------------*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: var(--font-col)
+}
+
+body {
+    display: grid;
+    grid-template-rows: max-content 1fr max-content;
+    height: 100vh;
+}
+
+/*---------------------------------*\
+|                                   |
+|           Header Styles           |
+|                                   |
+\*---------------------------------*/
+header {
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-col);
+}
+
+header > h1 {
+    font-family: 'eraser', Helvetica, sans-serif;
+    font-weight: 1000;
+    font-size: 50px;
+}
+
+/*---------------------------------*\
+|                                   |
+|        Main Content Styles        |
+|                                   |
+\*---------------------------------*/
+.container {
+    grid-row: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-content-col);
+}
+
+#gameboard {
+    display: inline-grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    background-color: var(--highlight-col);
+    color: var(--main-content-col);
+    font-family: 'eraser', Helvetica, sans-serif;
+    font-weight: 700;
+    border: none;
+    border-radius: 15px;
+    width: 100px;
+    height: 100px;
+}
+
+.playersAndButtons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+#players {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: repeat(2, max-content);
+    font-family: 'eraser', Helvetica, sans-serif;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.player > h1 {
+    font-size: 36px;
+}
+
+#playerOne, #playerTwo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+#buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#buttons button {
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 30px 10px 30px;
+    background-color: var(--highlight-col);
+    color: var(--accent-col);
+    border: 2px solid var(--link-click-col);
+}
+
+#buttons button:hover {
+    background-color: var(--link-hover-col);
+}
+
+#buttons button:active {
+    background-color: var(--link-click-col);
+}
+
+/*---------------------------------*\
+|                                   |
+|           Footer Styles           |
+|                                   |
+\*---------------------------------*/
+
+footer {
+    grid-row: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-col);
+    padding: 15px;
+}
+
+
+footer > a {
+    text-decoration: none;
+    color: var(--link-col);
+}
+
+footer > a:link {
+    color: var(--link-col);
+}
+
+footer > a:hover {
+    color: var(--link-hover-col);
+}
+
+footer > a:active {
+    color: var(--link-click-col);
+}
