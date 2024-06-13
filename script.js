@@ -35,15 +35,25 @@ function Gameboard() {
         return { addToken, getValue };
     }
 
+    // create variable to help detect invalid moves
+    // if move is invalid, set to 1
+    // if move is valid, set to 0
+    let invalidMove = 0;
+    const getInvalidMove = () => invalidMove;
+
     // function for player input
     const playerInput = (row, column, player) => {
         // check if cell is empty (value = 0);
         // if not empty move invalid so end loop
         if (board[row][column].getValue() !== 0) {
+            invalidMove = 1;
             return;
         }
-        else if (board[row][column].getValue() === 0)
+        else if (board[row][column].getValue() === 0) {
             board[row][column].addToken(player);
+            invalidMove = 0;
+            return;
+        }
     }
 
     // function to print game bord to console
@@ -56,7 +66,7 @@ function Gameboard() {
     }
 
     // return get board, user input, and print board
-    return { getBoard, playerInput, printBoard };
+    return { getBoard, playerInput, printBoard, getInvalidMove };
 }
 
 // create game controller factory
@@ -230,6 +240,14 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         // Accept user input to make the move - row, column input into the play round function
         // need to make sure that if the cell is already populated with a player token, then playerInput is called again
         board.playerInput(row, col, currentPlayer)
+
+        // handle invalid moves
+        let isMoveValid = board.getInvalidMove();
+        if (isMoveValid === 1) {
+            console.log(`${currentPlayer.name}, you have made an invalid move. Please try again.`)
+            return;
+        }
+
         // log the move they take
         console.log(`${currentPlayer.name} chose to put their token in row ${row}, column ${col}`)
         // run switch player function
