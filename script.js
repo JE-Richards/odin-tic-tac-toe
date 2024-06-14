@@ -218,19 +218,19 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         // print the player who's turn it is, or if the game has finished
         switch (gameStatus) {
             case "In progress":
-                console.log(`It is currently ${currentPlayer.name}'s turn.`)
+                console.log(`It is currently ${currentPlayer.name}'s turn.`);
                 break;
 
             case "Player One Wins":
-                console.log(`GAME OVER!!!\n${players[0].name} WINS!!!`)
+                console.log(`GAME OVER!!!\n${players[0].name} WINS!!!`);
                 return;
             
             case "Player Two Wins":
-                console.log(`GAME OVER!!!\n${players[1].name} WINS!!!`)
+                console.log(`GAME OVER!!!\n${players[1].name} WINS!!!`);
                 return;
 
             case "Tie Game":
-                console.log(`GAME OVER!!!\nIT'S A TIE, NO MOVES REMAINING!`)
+                console.log(`GAME OVER!!!\nIT'S A TIE, NO MOVES REMAINING!`);
         }
     }
 
@@ -261,7 +261,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
     // function to reset the game state
     const resetGame = () => {
-        gameStatus = "In Progress";
+        gameStatus = "In progress";
         getGameStatus();
 
         const newGamePlayer = { name: "New Game", token: "" };
@@ -337,9 +337,15 @@ function ScreenController () {
         else {
             createEventListeners();
         }
+
+        game.displayRound();
     }
 
     return { newGame }
 }
 
-ScreenController();
+let screen = ScreenController();
+
+const newGameBtn = document.getElementById("newGame");
+
+newGameBtn.addEventListener('click', screen.newGame);
