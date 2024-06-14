@@ -21,7 +21,7 @@ function Gameboard() {
     // function to dictate cell value (might need to be outside of module);
     function Cell() {
         // default value blank
-        let value = 0;
+        let value = "";
 
         // function to override value
         const addToken = (player) => {
@@ -36,22 +36,22 @@ function Gameboard() {
     }
 
     // create variable to help detect invalid moves
-    // if move is invalid, set to 1
-    // if move is valid, set to 0
-    let invalidMove = 0;
+    // if move is invalid, set to true
+    // if move is valid, set to false
+    let invalidMove = false;
     const getInvalidMove = () => invalidMove;
 
     // function for player input
     const playerInput = (row, column, player) => {
         // check if cell is empty (value = 0);
         // if not empty move invalid so end loop
-        if (board[row][column].getValue() !== 0) {
-            invalidMove = 1;
+        if (board[row][column].getValue() !== "") {
+            invalidMove = true;
             return;
         }
-        else if (board[row][column].getValue() === 0) {
+        else if (board[row][column].getValue() === "") {
             board[row][column].addToken(player);
-            invalidMove = 0;
+            invalidMove = false;
             return;
         }
     }
@@ -77,16 +77,19 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     // needs the name and the corresponding token
     // for now offer a default token of x and o
     const players = [
-        { name: playerOneName, token: 1 },
-        { name: playerTwoName, token: 2 }
+        { name: playerOneName, token: "X" },
+        { name: playerTwoName, token: "O" }
     ]
 
     // Instantiate the gameboard
     const board = Gameboard();
 
     // Pick current player
-    // For now, default to player 1
-    let currentPlayer = players[0];
+    // Initially pick the player randomly
+    let currentPlayer = players[
+        // Pick either 0 or 1 randomly
+        (Math.floor(Math.random() * 2))
+    ];
 
     // Logic to switch from one player to another
     const switchPlayer = () => {
@@ -99,12 +102,8 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     // function to return the current player
     const getCurrentPlayer = () => currentPlayer;
 
-    // set a game status
-    // 0 in progress
-    // 1 player one wins
-    // 2 player two wins
-    // 3 tie game
-    let gameStatus = 0;
+    // set a games status
+    let gameStatus = "In progress";
 
     // function to get the game status after updated value
     const getGameStatus = () => gameStatus;
@@ -113,8 +112,8 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     const winConditions = () => {
         // if no combinations possible -> tie game
             // if all cells.getValue() !== 0 then no moves left
-        if (board.getBoard().every(row => row.every(cell => cell.getValue() !== 0))) {
-            gameStatus = 3;
+        if (board.getBoard().every(row => row.every(cell => cell.getValue() !== ""))) {
+            gameStatus = "Tie Game";
             getGameStatus();
             return;
         }
@@ -128,16 +127,16 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             ) {
                 // switch to avoid needing to use nested ifs
                 switch (board.getBoard()[row][0].getValue()) {
-                    case 0:
+                    case "":
                         break;
                     
-                    case 1:
-                        gameStatus = 1;
+                    case "X":
+                        gameStatus = "Player One Wins";
                         getGameStatus();
                         break;
                     
-                    case 2:
-                        gameStatus = 2;
+                    case "O":
+                        gameStatus = "Player Two Wins";
                         getGameStatus();
                         break;
                 }
@@ -151,16 +150,16 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
                 (board.getBoard()[0][col].getValue() === board.getBoard()[2][col].getValue())
             ) {
                 switch (board.getBoard()[0][col].getValue()) {
-                    case 0:
+                    case "":
                         break;
                     
-                    case 1:
-                        gameStatus = 1;
+                    case "X":
+                        gameStatus = "Player One Wins";
                         getGameStatus();
                         break;
                     
-                    case 2:
-                        gameStatus = 2;
+                    case "O":
+                        gameStatus = "Player Two Wins";
                         getGameStatus();
                         break;
                 }
@@ -174,16 +173,16 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             (board.getBoard()[0][0].getValue() === board.getBoard()[2][2].getValue())
         ) {
             switch (board.getBoard()[0][0].getValue()) {
-                case 0:
+                case "":
                     break;
                 
-                case 1:
-                    gameStatus = 1;
+                case "X":
+                    gameStatus = "Player One Wins";
                     getGameStatus();
                     break;
                 
-                case 2:
-                    gameStatus = 2;
+                case "O":
+                    gameStatus = "Player Two Wins";
                     getGameStatus();
                     break;
             }
@@ -195,16 +194,16 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             (board.getBoard()[0][2].getValue() === board.getBoard()[2][0].getValue())
         ) {
             switch (board.getBoard()[0][2].getValue()) {
-                case 0:
+                case "":
                     break;
                 
-                case 1:
-                    gameStatus = 1;
+                case "X":
+                    gameStatus = "Player One Wins";
                     getGameStatus();
                     break;
                 
-                case 2:
-                    gameStatus = 2;
+                case "O":
+                    gameStatus = "Player Two Wins";
                     getGameStatus();
                     break;
             }
@@ -218,19 +217,19 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         board.printBoard();
         // print the player who's turn it is, or if the game has finished
         switch (gameStatus) {
-            case 0:
+            case "In progress":
                 console.log(`It is currently ${currentPlayer.name}'s turn.`)
                 break;
 
-            case 1:
+            case "Player One Wins":
                 console.log(`GAME OVER!!!\n${players[0].name} WINS!!!`)
                 return;
             
-            case 2:
+            case "Player Two Wins":
                 console.log(`GAME OVER!!!\n${players[1].name} WINS!!!`)
                 return;
 
-            case 3:
+            case "Tie Game":
                 console.log(`GAME OVER!!!\nIT'S A TIE, NO MOVES REMAINING!`)
         }
     }
@@ -242,8 +241,8 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         board.playerInput(row, col, currentPlayer)
 
         // handle invalid moves
-        let isMoveValid = board.getInvalidMove();
-        if (isMoveValid === 1) {
+        let isMoveInvalid = board.getInvalidMove();
+        if (isMoveInvalid === true) {
             console.log(`${currentPlayer.name}, you have made an invalid move. Please try again.`)
             return;
         }
@@ -260,11 +259,87 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         displayRound();
     }
 
-    // call the function to display the round to start the game
-    displayRound();
+    // function to reset the game state
+    const resetGame = () => {
+        gameStatus = "In Progress";
+        getGameStatus();
 
+        const newGamePlayer = { name: "New Game", token: "" };
+        for (i = 0; i < board.getBoard().length; i++) {
+            for (j = 0; j < board.getBoard()[i].length; j++) {
+                board.getBoard()[i][j].addToken(newGamePlayer);
+            }
+        }
+    }
+
+    // return displayRound to use to initiate the start of a game
     // return function to play round
     // return get current player for UI use later
     // return get game status to program logic in the UI to stop the game from being playable when the game is over
-    return { playRound, getCurrentPlayer, getGameStatus }
+    // return reset game function
+    // return getBoard from inside Gameboard factory so it can be used to populate the UI
+    return { displayRound, playRound, getCurrentPlayer, getGameStatus, resetGame, getBoard: board.getBoard }
 }
+
+function ScreenController () {
+    const game = GameController();
+
+    // create variable to make the createEventListener function run only once
+    let hasBeenCalled = false;
+    const getHasBeenCalled = () => hasBeenCalled;
+
+    // create function to identify gameboard cells and add event listeners to them
+    // function can only be called once to avoid creating an abundance of event listeners
+    // event listener should also do nothing when game has finished and board not reset
+    const createEventListeners = () => {
+        if (!hasBeenCalled) {
+            const cellList = document.querySelectorAll('.cell');
+
+            cellList.forEach((cell) => {
+                cell.addEventListener('click', (event) => {
+                    if (
+                        game.getGameStatus() === "Player One Wins" ||
+                        game.getGameStatus() === "Player Two Wins" ||
+                        game.getGameStatus() === "Tie Game"
+                    ) {
+                        return;
+                    }
+                    else {
+                        let cellRow = event.target.getAttribute('data-row');
+                        let cellCol = event.target.getAttribute('data-col');
+                        game.playRound(cellRow, cellCol);
+                        event.target.innerHTML = `${game.getBoard()[cellRow][cellCol].getValue()}`
+                    }
+                })
+            });
+            
+            hasBeenCalled = true;
+            getHasBeenCalled();
+        }
+        else {
+            console.log("Event Listeners have already been created.");
+        }
+    }
+
+    // function to start a new game for use on UI button
+    const newGame = () => {
+        // reset board state
+        game.resetGame();
+        
+        // if event listeners not yet created, create them
+        // else reset UI gameboard cell innerHTMLs
+        if (hasBeenCalled) {
+            const cellList = document.querySelectorAll('.cell');
+            cellList.forEach((cell) => {
+                cell.innerHTML = game.getBoard()[cell.getAttribute('data-row')][cell.getAttribute('data-col')].getValue();
+            })
+        }
+        else {
+            createEventListeners();
+        }
+    }
+
+    return { newGame }
+}
+
+ScreenController();
