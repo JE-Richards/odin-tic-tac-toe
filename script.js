@@ -292,6 +292,10 @@ function ScreenController () {
     let hasBeenCalled = false;
     const getHasBeenCalled = () => hasBeenCalled;
 
+    // create variables to control the game over dialog
+    const dialog = document.querySelector('dialog');
+    const dialogMsg = document.getElementById('gameOverMessage');
+
     // create function to identify gameboard cells and add event listeners to them
     // function can only be called once to avoid creating an abundance of event listeners
     // event listener should also do nothing when game has finished and board not reset
@@ -313,6 +317,20 @@ function ScreenController () {
                         let cellCol = event.target.getAttribute('data-col');
                         game.playRound(cellRow, cellCol);
                         event.target.innerHTML = `${game.getBoard()[cellRow][cellCol].getValue()}`
+                        switch (game.getGameStatus()) {
+                            case ("Player One Wins"):
+                                dialogMsg.innerHTML = `CONGRATULATIONS Player One!!<br>YOU WIN!`;
+                                dialog.showModal();
+                                break;
+                            case ("Player Two Wins"):
+                                dialogMsg.innerHTML = `CONGRATULATIONS Player Two!!<br>YOU WIN!`;
+                                dialog.showModal();
+                                break;
+                            case ("Tie Game"):
+                                dialogMsg.innerHTML = "Better Luck Next Time! It's a Draw :(";
+                                dialog.showModal();
+                                break;
+                        }
                     }
                 })
             });
@@ -350,6 +368,8 @@ function ScreenController () {
 
 let screen = ScreenController();
 
-const newGameBtn = document.getElementById("newGame");
+const newGameBtns = document.querySelectorAll('.newGame');
 
-newGameBtn.addEventListener('click', screen.newGame);
+newGameBtns.forEach((btn) => {
+    btn.addEventListener('click', screen.newGame);
+});

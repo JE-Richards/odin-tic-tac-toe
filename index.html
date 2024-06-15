@@ -11,6 +11,15 @@
     <header>
         <h1>TIC-TAC-TOE</h1>
     </header>
+    <dialog id="gameOver">
+        <form method="dialog">
+            <h1 id="gameOverMessage"></h1>
+            <menu>
+                <button autofocus type="reset" onclick="this.closest('dialog').close('cancel')">Close</button>
+                <button type="submit" class="newGame" value="confirm">New Game</button>
+            </menu>
+        </form>
+    </dialog>
     <div class="container">
         <div id="gameboard">
             <div id="cellZeroZero" class="cell" data-row="0" data-col="0">
@@ -51,7 +60,7 @@
                 </div>
             </div>
             <div id="buttons">
-                <button id="newGame">New Game</button>
+                <button class="newGame">New Game</button>
             </div>
         </div>
     </div>
