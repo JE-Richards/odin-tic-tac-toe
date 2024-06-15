@@ -110,14 +110,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
     // Win / lose / tie logic
     const winConditions = () => {
-        // if no combinations possible -> tie game
-            // if all cells.getValue() !== 0 then no moves left
-        if (board.getBoard().every(row => row.every(cell => cell.getValue() !== ""))) {
-            gameStatus = "Tie Game";
-            getGameStatus();
-            return;
-        }
-
         // Check for all combinations of 3 in a row
         // 3 in a row for rows
         for (let row = 0; row < 3; row ++) {
@@ -210,6 +202,18 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         }
     }
 
+    const tieCondition = () => {
+        // if no combinations possible -> tie game
+        if (
+            board.getBoard().every(row => row.every(cell => cell.getValue() !== "")) &&
+            gameStatus === "In progress"
+        ) {
+            gameStatus = "Tie Game";
+            getGameStatus();
+            return;
+        }
+    }
+
     // function to display a new round
     // includes logic to declare win, loss, tie
     const displayRound = () => {
@@ -253,8 +257,8 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         switchPlayer();
         getCurrentPlayer();
         // check win / lose / tie
-            // if win / lose / tie end game
         winConditions();
+        tieCondition();
         // log new round
         displayRound();
     }
