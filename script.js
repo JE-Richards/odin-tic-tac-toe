@@ -292,9 +292,20 @@ function ScreenController () {
     let hasBeenCalled = false;
     const getHasBeenCalled = () => hasBeenCalled;
 
-    // create variables to control the game over dialog
-    const dialog = document.querySelector('dialog');
-    const dialogMsg = document.getElementById('gameOverMessage');
+    // create variables to highlight which player's turn it is
+    const playerOne = document.querySelector('#playerOne > h1');
+    const playerTwo = document.querySelector('#playerTwo > h1');
+    // create function to guide the highlight change
+    const highlightPlayer = (currentPlayer) => {
+        if (currentPlayer === "X") {
+            playerOne.style.color = '#A88BFA';
+            playerTwo.style.color = '';
+        }
+        else {
+            playerTwo.style.color = '#A88BFA';
+            playerOne.style.color = '';
+        }
+    }
 
     // create function to identify gameboard cells and add event listeners to them
     // function can only be called once to avoid creating an abundance of event listeners
@@ -302,6 +313,10 @@ function ScreenController () {
     const createEventListeners = () => {
         if (!hasBeenCalled) {
             const cellList = document.querySelectorAll('.cell');
+
+            // create variables to control the game over dialog
+            const dialog = document.querySelector('dialog');
+            const dialogMsg = document.getElementById('gameOverMessage');
 
             cellList.forEach((cell) => {
                 cell.addEventListener('click', (event) => {
@@ -331,10 +346,12 @@ function ScreenController () {
                                 dialog.showModal();
                                 break;
                         }
+                        let currentPlayer = game.getCurrentPlayer().token;
+                        highlightPlayer(currentPlayer);
                     }
                 })
             });
-            
+
             hasBeenCalled = true;
             getHasBeenCalled();
         }
@@ -361,6 +378,7 @@ function ScreenController () {
         }
 
         game.displayRound();
+        highlightPlayer();
     }
 
     return { newGame }
